@@ -7,8 +7,16 @@ This repository contains three separate projects:
 2. **ClientBlazor**: A front-end application built with Blazor WebAssembly.
 3. **Client**: A front-end application built with React Typescript.
 
-The client communicates with the server via HTTP requests.
 Select multi startup project to run all of them.
+
+Database this project using is an in-memory database.
+The client communicates with the server via HTTP requests.
+
+There are three total endpoints:
+
+- `Claim/submit`: claim Submission API;
+- `Claim/process`: claim Processing API;
+- `Claim/status`: retrieve Claims API;
 
 ---
 
