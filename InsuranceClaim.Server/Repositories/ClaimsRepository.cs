@@ -19,7 +19,7 @@ namespace InsuranceClaim.Server.Repositories
             return await _context.Claims.Where(c => c.Status == status).ToListAsync();
         }
 
-        public async Task<Claim> GetClaimByIdAsync(int id)
+        public async Task<Claim> GetClaimByIdAsync(Guid id)
         {
             return await _context.Claims.FindAsync(id);
         }

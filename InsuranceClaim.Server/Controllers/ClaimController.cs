@@ -20,12 +20,16 @@ namespace InsuranceClaim.Server.Controllers
         [HttpPost("submit-claim")]
         public async Task<IActionResult> SubmitClaim([FromBody] Claim claim)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             await _service.AddClaimAsync(claim);
             return Ok(claim);
         }
 
         [HttpPost("process-claim/{id}")]
-        public async Task<IActionResult> ProcessClaim(int id)
+        public async Task<IActionResult> ProcessClaim(Guid id)
         {
             var claim = await _service.ProcessClaimAsync(id);
             if (claim == null) return NotFound();

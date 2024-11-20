@@ -1,4 +1,5 @@
-﻿using InsuranceClaim.Server.Model.Entities;
+﻿using InsuranceClaim.Server.Extensions;
+using InsuranceClaim.Server.Model.Entities;
 using InsuranceClaim.Server.Model.Enum;
 using InsuranceClaim.Server.Repositories;
 
@@ -18,7 +19,7 @@ namespace InsuranceClaim.Server.Services
             return await _repository.GetClaimsByStatusAsync(status);
         }
 
-        public async Task<Claim> ProcessClaimAsync(int id)
+        public async Task<Claim> ProcessClaimAsync(Guid id)
         {
             var claim = await _repository.GetClaimByIdAsync(id);
             if (claim == null) return null;
@@ -32,16 +33,6 @@ namespace InsuranceClaim.Server.Services
         public async Task AddClaimAsync(Claim claim)
         {
             await _repository.AddClaimAsync(claim);
-        }
-    }
-
-    public static class ClaimExtensions
-    {
-        private static readonly Random _random = new();
-
-        public static EnumStatus GetRandomStatus(this Claim claim)
-        {
-            return _random.Next(2) == 0 ? EnumStatus.Approved : EnumStatus.Rejected;
         }
     }
 }

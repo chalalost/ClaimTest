@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using InsuranceClaim.Server.Model.Entities;
+using InsuranceClaim.Server.Model.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace InsuranceClaim.Server.Data
