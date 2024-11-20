@@ -1,4 +1,5 @@
 ﻿using InsuranceClaim.Server.Entities;
+using InsuranceClaim.Server.Enum;
 using InsuranceClaim.Server.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace InsuranceClaim.Server.Controllers
         [HttpPost("submit")]
         public async Task<IActionResult> SubmitClaim([FromBody] Claim claim)
         {
-            claim.Status = "Pending";
+            claim.Status = EnumStatus.Pending;
             claim.ClaimDate = DateTime.UtcNow;
             _context.Claims.Add(claim);
             await _context.SaveChangesAsync();
@@ -32,17 +33,17 @@ namespace InsuranceClaim.Server.Controllers
             var claim = await _context.Claims.FindAsync(id);
             if (claim == null) return NotFound();
 
-            claim.Status = _random.Next(0, 2) == 0 ? "Approved" : "Rejected";
+            claim.Status = _random.Next(0, 2) == 0 ? EnumStatus.Approved : EnumStatus.Rejected;
             await _context.SaveChangesAsync();
             return Ok(claim);
         }
 
         // 3. Retrieve Claims API
-        [HttpGet("status/{status}")]
+        /*[HttpGet("status/{status}")]
         public IActionResult GetClaimsByStatus(string status)
         {
             var claims = _context.Claims.Where(c => c.Status.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
             return Ok(claims);
-        }
+        }*/
     }
 }

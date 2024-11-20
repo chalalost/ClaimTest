@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceClaim.Server", "InsuranceClaim.Server\InsuranceClaim.Server.csproj", "{3AFC8082-5368-430B-9682-C67681F7E7F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsuranceClaim.Server", "InsuranceClaim.Server\InsuranceClaim.Server.csproj", "{3AFC8082-5368-430B-9682-C67681F7E7F6}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "insuranceclaim.client", "insuranceclaim.client\insuranceclaim.client.esproj", "{09C9954B-7611-4AAB-AA32-513CB00028AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsuranceClaim.ClientBlazor", "InsuranceClaim.ClientBlazor\InsuranceClaim.ClientBlazor.csproj", "{9A32375A-9C57-4653-9F84-7A9103F005CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceClaim.ClientBlazor", "InsuranceClaim.ClientBlazor\InsuranceClaim.ClientBlazor.csproj", "{9A32375A-9C57-4653-9F84-7A9103F005CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceClaim.TestAPI", "InsuranceClaim.TestAPI\InsuranceClaim.TestAPI.csproj", "{70D6F807-8EDC-4927-9B06-2046C2F2E043}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +19,14 @@ Global
 		{3AFC8082-5368-430B-9682-C67681F7E7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AFC8082-5368-430B-9682-C67681F7E7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AFC8082-5368-430B-9682-C67681F7E7F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09C9954B-7611-4AAB-AA32-513CB00028AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09C9954B-7611-4AAB-AA32-513CB00028AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09C9954B-7611-4AAB-AA32-513CB00028AD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{09C9954B-7611-4AAB-AA32-513CB00028AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09C9954B-7611-4AAB-AA32-513CB00028AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09C9954B-7611-4AAB-AA32-513CB00028AD}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{9A32375A-9C57-4653-9F84-7A9103F005CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A32375A-9C57-4653-9F84-7A9103F005CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A32375A-9C57-4653-9F84-7A9103F005CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A32375A-9C57-4653-9F84-7A9103F005CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70D6F807-8EDC-4927-9B06-2046C2F2E043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70D6F807-8EDC-4927-9B06-2046C2F2E043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70D6F807-8EDC-4927-9B06-2046C2F2E043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70D6F807-8EDC-4927-9B06-2046C2F2E043}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

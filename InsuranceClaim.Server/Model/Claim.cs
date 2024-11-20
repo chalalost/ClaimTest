@@ -1,12 +1,14 @@
-﻿namespace InsuranceClaim.Server.Entities
+﻿using InsuranceClaim.Server.Enum;
+
+namespace InsuranceClaim.Server.Entities
 {
     public class Claim
     {
-        public Guid Id { get; set; } // Auto-generated
+        public Guid Id { get; set; }
         public string CustomerName { get; set; } = string.Empty;
-        public decimal ClaimAmount { get; set; }
+        public double Amount { get; set; }
         public string Description { get; set; } = string.Empty;
-        public DateTime ClaimDate { get; set; } = DateTime.UtcNow;
-        public string Status { get; set; } = "Pending"; // Default status
+        public DateTime ClaimDate { get; set; }
+        public EnumStatus Status { get; set; }
     }
 }
