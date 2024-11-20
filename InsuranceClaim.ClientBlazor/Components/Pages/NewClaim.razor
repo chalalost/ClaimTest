@@ -5,7 +5,7 @@
 
 <h3>New Claim</h3>
 
-@* <EditForm Model="NewClaim" OnValidSubmit="HandleSubmit">
+<EditForm Model="NewClaim" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -22,14 +22,14 @@
         <InputTextArea @bind-Value="NewClaim.ClaimDescription" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm> *@
+</EditForm>
 
 @code {
-    //private ClaimDto NewClaim = new ClaimDto();
+    private ClaimDto NewClaim = new ClaimDto();
 
-    //private async Task HandleSubmit()
-    //{
-    //    await Http.PostAsJsonAsync("api/claims", NewClaim);
-    //    Navigation.NavigateTo("/claims");
-    //}
+    private async Task HandleSubmit()
+    {
+        await Http.PostAsJsonAsync("api/claims", NewClaim);
+        Navigation.NavigateTo("/claims");
+    }
 }
