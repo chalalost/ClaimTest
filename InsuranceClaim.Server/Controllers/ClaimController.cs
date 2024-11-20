@@ -1,49 +1,43 @@
-﻿using InsuranceClaim.Server.Entities;
-using InsuranceClaim.Server.Enum;
-using InsuranceClaim.Server.Model;
+﻿using InsuranceClaim.Server.Data;
+using InsuranceClaim.Server.Model.Entities;
+using InsuranceClaim.Server.Model.Enum;
+using InsuranceClaim.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InsuranceClaim.Server.Controllers
 {
-    public class ClaimController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ClaimsController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly Random _random = new();
+        private readonly ClaimsService _service;
 
-        public ClaimController(AppDbContext context)
+        public ClaimsController(ClaimsService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // 1. Claim Submission API
-        [HttpPost("submit")]
+        [HttpPost("submit-claim")]
         public async Task<IActionResult> SubmitClaim([FromBody] Claim claim)
         {
-            claim.Status = EnumStatus.Pending;
-            claim.ClaimDate = DateTime.UtcNow;
-            _context.Claims.Add(claim);
-            await _context.SaveChangesAsync();
+            await _service.AddClaimAsync(claim);
             return Ok(claim);
         }
 
-        // 2. Claim Processing API
-        [HttpPost("process/{id}")]
+        [HttpPost("process-claim/{id}")]
         public async Task<IActionResult> ProcessClaim(int id)
         {
-            var claim = await _context.Claims.FindAsync(id);
+            var claim = await _service.ProcessClaimAsync(id);
             if (claim == null) return NotFound();
 
-            claim.Status = _random.Next(0, 2) == 0 ? EnumStatus.Approved : EnumStatus.Rejected;
-            await _context.SaveChangesAsync();
             return Ok(claim);
         }
 
-        // 3. Retrieve Claims API
-        /*[HttpGet("status/{status}")]
-        public IActionResult GetClaimsByStatus(string status)
+        [HttpGet("retrieve-claims")]
+        public async Task<IActionResult> RetrieveClaims([FromQuery] EnumStatus status)
         {
-            var claims = _context.Claims.Where(c => c.Status.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
+            var claims = await _service.GetClaimsByStatusAsync(status);
             return Ok(claims);
-        }*/
+        }
     }
 }

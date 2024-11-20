@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsuranceClaim.ClientBlazor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceClaim.TestAPI", "InsuranceClaim.TestAPI\InsuranceClaim.TestAPI.csproj", "{70D6F807-8EDC-4927-9B06-2046C2F2E043}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D8BDFCAD-9C2A-4CEF-BCF9-0780D9E1284E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{743BB4E5-276B-4506-8FAC-E59FE3E95073}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3AFC8082-5368-430B-9682-C67681F7E7F6} = {D8BDFCAD-9C2A-4CEF-BCF9-0780D9E1284E}
+		{9A32375A-9C57-4653-9F84-7A9103F005CA} = {D8BDFCAD-9C2A-4CEF-BCF9-0780D9E1284E}
+		{70D6F807-8EDC-4927-9B06-2046C2F2E043} = {743BB4E5-276B-4506-8FAC-E59FE3E95073}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {995422CB-4D82-4A07-B615-5C3E1DF07D7E}

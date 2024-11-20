@@ -1,4 +1,4 @@
-﻿namespace InsuranceClaim.Server.Enum
+﻿namespace InsuranceClaim.Server.Model.Enum
 {
     public enum EnumStatus
     {
