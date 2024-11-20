@@ -1,7 +1,80 @@
 ﻿@page "/"
+@using System.Text.Json
+@using InsuranceClaim.ClientBlazor.Components.Layout.Shared
+@inject HttpClient http
+@inject NavigationManager navigationManager
 
-<PageTitle>Home</PageTitle>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h4>Insurance Claim Submission</h4>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="claimModel" OnValidSubmit="SubmitClaim">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
 
-<h1>Hello, world!</h1>
+                        <div class="mb-3">
+                            <label for="customerName" class="form-label">Customer Name</label>
+                            <InputText id="customerName" class="form-control" @bind-Value="claimModel.CustomerName" required />
+                        </div>
 
-Welcome to your new app.
+                        <div class="mb-3">
+                            <label for="claimAmount" class="form-label">Claim Amount</label>
+                            <InputNumber id="claimAmount" class="form-control" @bind-Value="claimModel.ClaimAmount" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="claimDescription" class="form-label">Claim Description</label>
+                            <InputTextArea id="claimDescription" class="form-control" @bind-Value="claimModel.ClaimDescription" rows="3" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="claimDate" class="form-label">Claim Date</label>
+                            <InputDate id="claimDate" class="form-control" @bind-Value="claimModel.ClaimDate" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Claim Status</label>
+                            <select id="status" class="form-select" @bind="claimModel.ClaimStatus">
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit Claim</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private ClaimDto claimModel { get; set; } = new ClaimDto();
+
+    private List<ClaimDto> claims { get; set; } = new List<ClaimDto>();
+
+    private async Task SubmitClaim()
+    {
+        // Call the backend API to submit the claim
+        var response = await http.GetAsync("http://localhost:5000/api/claim/get-all-claims");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<List<ClaimDto>>(json);
+            if (result != null) claims = result;
+        }
+        else
+        {
+            // Handle errors (e.g., display an error message)
+            Console.WriteLine("Error!");
+            return;
+        }
+    }
+}

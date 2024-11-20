@@ -49,3 +49,24 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.card {
+    border-radius: 15px;
+    margin-top: 30px;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+    font-size: 20px;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+    button[type="submit"]:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }

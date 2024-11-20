@@ -14,6 +14,11 @@ namespace InsuranceClaim.Server.Services
             _repository = repository;
         }
 
+        public async Task<List<Claim>> GetAllAsync()
+        {
+            return await _repository.GetAllAsync();
+        }
+
         public async Task<IEnumerable<Claim>> GetClaimsByStatusAsync(EnumStatus status)
         {
             return await _repository.GetClaimsByStatusAsync(status);

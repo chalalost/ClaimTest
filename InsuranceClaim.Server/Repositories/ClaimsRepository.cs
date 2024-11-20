@@ -14,6 +14,11 @@ namespace InsuranceClaim.Server.Repositories
             _context = context;
         }
 
+        public async Task<List<Claim>> GetAllAsync()
+        {
+            return await _context.Claims.ToListAsync();
+        }
+
         public async Task<IEnumerable<Claim>> GetClaimsByStatusAsync(EnumStatus status)
         {
             return await _context.Claims.Where(c => c.ClaimStatus == status).ToListAsync();

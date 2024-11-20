@@ -51,6 +51,13 @@ namespace InsuranceClaim.Server.Controllers
             return Ok(claim);
         }
 
+        [HttpGet("get-all-claims")]
+        public async Task<IActionResult> GetAllClaims()
+        {
+            var claims = await _service.GetAllAsync();
+            return Ok(claims);
+        }
+
         [HttpGet("retrieve-claims")]
         public async Task<IActionResult> RetrieveClaims([FromQuery] EnumStatus status)
         {

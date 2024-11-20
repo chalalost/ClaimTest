@@ -1,35 +1,53 @@
 ﻿@page "/new-claim"
 @using InsuranceClaim.ClientBlazor.Components.Layout.Shared
-@inject HttpClient Http
+@inject HttpClient http
 @inject NavigationManager Navigation
 
 <h3>New Claim</h3>
 
-@* <EditForm Model="NewClaim" OnValidSubmit="HandleSubmit">
+ <EditForm Model="Claim" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div>
         <label>Customer Name:</label>
-        <InputText @bind-Value="NewClaim.CustomerName" />
+        <InputText @bind-Value="Claim.CustomerName" />
     </div>
     <div>
         <label>Claim Amount:</label>
-        <InputNumber @bind-Value="NewClaim.ClaimAmount" />
+        <InputNumber @bind-Value="Claim.ClaimAmount" />
     </div>
     <div>
         <label>Description:</label>
-        <InputTextArea @bind-Value="NewClaim.ClaimDescription" />
+        <InputTextArea @bind-Value="Claim.ClaimDescription" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
 @code {
-    private ClaimDto NewClaim = new ClaimDto();
+    [CascadingParameter]
+    public ClaimDto Claim { get; set; } = new ClaimDto();
 
     private async Task HandleSubmit()
     {
-        await Http.PostAsJsonAsync("api/claims", NewClaim);
-        Navigation.NavigateTo("/claims");
-    *@ }
+        var request = new ClaimRequest
+            {
+                CustomerName = Claim.CustomerName,
+                ClaimDescription = Claim.ClaimDescription,
+                ClaimAmount = Claim.ClaimAmount,
+                CreatedDate = Claim.ClaimDate
+            };
+
+        var response = await http.PostAsJsonAsync("http://localhost:5000/api/claims", request);
+        await http.PostAsJsonAsync("api/claims", Claim);
+        Navigation.NavigateTo("/");
+    }
+
+    public class ClaimRequest
+    {
+        public string CustomerName { get; set; } = string.Empty;
+        public decimal ClaimAmount { get; set; }
+        public string ClaimDescription { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    }
 }
