@@ -22,10 +22,11 @@ namespace InsuranceClaim.Server.Services
         public async Task<Claim> ProcessClaimAsync(Guid id)
         {
             var claim = await _repository.GetClaimByIdAsync(id);
-            if (claim == null) return null;
-
-            claim.Status = claim.GetRandomStatus();
+            if(claim is not null)
+            {
+            claim.ClaimStatus = claim.GetRandomStatus();
             await _repository.UpdateClaimAsync(claim);
+            }
 
             return claim;
         }

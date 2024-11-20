@@ -15,21 +15,21 @@ namespace InsuranceClaim.Server.Data
                         CustomerName = "John Doe",
                         ClaimAmount = 1200.50m,
                         ClaimDescription = "Car accident in downtown",
-                        Status = EnumStatus.Pending
+                        ClaimStatus = EnumStatus.Pending
                     },
                     new Claim
                     {
                         CustomerName = "Jane Smith",
                         ClaimAmount = 1500.00m,
                         ClaimDescription = "Water damage in home",
-                        Status = EnumStatus.Pending
+                        ClaimStatus = EnumStatus.Pending 
                     },
                     new Claim
                     {
                         CustomerName = "Tom Brown",
                         ClaimAmount = 800.00m,
                         ClaimDescription = "Stolen wallet",
-                        Status = EnumStatus.Pending
+                        ClaimStatus = EnumStatus.Pending
                     }
                 );
                 context.SaveChanges();

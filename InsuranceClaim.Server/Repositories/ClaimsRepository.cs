@@ -16,7 +16,7 @@ namespace InsuranceClaim.Server.Repositories
 
         public async Task<IEnumerable<Claim>> GetClaimsByStatusAsync(EnumStatus status)
         {
-            return await _context.Claims.Where(c => c.Status == status).ToListAsync();
+            return await _context.Claims.Where(c => c.ClaimStatus == status).ToListAsync();
         }
 
         public async Task<Claim> GetClaimByIdAsync(Guid id)
@@ -26,6 +26,7 @@ namespace InsuranceClaim.Server.Repositories
 
         public async Task AddClaimAsync(Claim claim)
         {
+            claim.Id = Guid.NewGuid();
             _context.Claims.Add(claim);
             await _context.SaveChangesAsync();
         }

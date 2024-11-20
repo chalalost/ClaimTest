@@ -5,7 +5,7 @@
 
 <h3>New Claim</h3>
 
-<EditForm Model="NewClaim" OnValidSubmit="HandleSubmit">
+@* <EditForm Model="NewClaim" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -31,5 +31,5 @@
     {
         await Http.PostAsJsonAsync("api/claims", NewClaim);
         Navigation.NavigateTo("/claims");
-    }
+    *@ }
 }

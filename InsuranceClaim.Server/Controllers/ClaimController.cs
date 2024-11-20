@@ -1,4 +1,6 @@
-﻿using InsuranceClaim.Server.Data;
+﻿using AutoMapper;
+using InsuranceClaim.Server.Data;
+using InsuranceClaim.Server.Model.DTOs;
 using InsuranceClaim.Server.Model.Entities;
 using InsuranceClaim.Server.Model.Enum;
 using InsuranceClaim.Server.Services;
@@ -11,20 +13,32 @@ namespace InsuranceClaim.Server.Controllers
     public class ClaimsController : ControllerBase
     {
         private readonly ClaimsService _service;
+        private readonly IMapper _mapper;
 
-        public ClaimsController(ClaimsService service)
+        public ClaimsController(ClaimsService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
+
         [HttpPost("submit-claim")]
-        public async Task<IActionResult> SubmitClaim([FromBody] Claim claim)
+        public async Task<IActionResult> SubmitClaim([FromBody] ClaimSubmissionDto claim)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _service.AddClaimAsync(claim);
+            var claimRequest = new Claim
+            {
+                CustomerName = claim.CustomerName,
+                ClaimAmount = claim.ClaimAmount,
+                ClaimDescription = claim.ClaimDescription,
+                ClaimDate = DateTime.UtcNow,
+                ClaimStatus = EnumStatus.Pending
+            };
+
+            await _service.AddClaimAsync(claimRequest);
             return Ok(claim);
         }
 

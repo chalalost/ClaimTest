@@ -1,7 +1,11 @@
-﻿using InsuranceClaim.Server.Data;
+﻿using AutoMapper;
+using InsuranceClaim.Server.Data;
+using InsuranceClaim.Server.Model;
 using InsuranceClaim.Server.Repositories;
 using InsuranceClaim.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
+using InsuranceClaim.Server.Validators;
 
 namespace InsuranceClaim.Server
 {
@@ -9,13 +13,31 @@ namespace InsuranceClaim.Server
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            // In-memory database configuration
             services.AddDbContext<ClaimsDbContext>(options =>
                 options.UseInMemoryDatabase("ClaimsDb"));
+
+            // AutoMapper configuration
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutoMapperProfile());
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            // FluentValidation
+            services.AddControllers()
+                    .AddFluentValidation(fv =>
+                    {
+                        fv.RegisterValidatorsFromAssemblyContaining<ClaimSubmissionDtoValidator>();
+                    });
 
             services.AddScoped<ClaimsRepository>();
             services.AddScoped<ClaimsService>();
             services.AddControllers();
 
+            // CORS configuration
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
