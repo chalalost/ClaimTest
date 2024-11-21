@@ -8,7 +8,6 @@ namespace InsuranceClaim.Server.Model
     {
         public AutoMapperProfile() {
             CreateMap<Claim, ClaimSubmissionDto>()
-                .ForMember(d => d.CreatedDate, opt => opt.MapFrom(src => src.ClaimDate))
                 .ForMember(d => d.CustomerName, opt => opt.MapFrom(src => src.CustomerName))
                 .ForMember(d => d.ClaimAmount, opt => opt.MapFrom(src => src.ClaimAmount));
         }

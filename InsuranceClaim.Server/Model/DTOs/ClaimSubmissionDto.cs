@@ -8,6 +8,5 @@ namespace InsuranceClaim.Server.Model.DTOs
         public string CustomerName { get; set; } = string.Empty;
         public decimal ClaimAmount { get; set; }
         public string ClaimDescription { get; set; } = string.Empty;
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }

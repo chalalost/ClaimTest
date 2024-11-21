@@ -9,7 +9,7 @@ namespace InsuranceClaim.Server.Data.Entities
         public string CustomerName { get; set; } = string.Empty;
         public decimal ClaimAmount { get; set; }
         public string ClaimDescription { get; set; } = string.Empty;
-        public DateTime ClaimDate { get; set; } = DateTime.UtcNow;
+        public DateTime? ClaimDate { get; set; } = DateTime.UtcNow;
         public EnumStatus ClaimStatus { get; set; } = EnumStatus.Pending;
     }
 }

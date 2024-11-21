@@ -1,0 +1,102 @@
+﻿@page "/"
+@using InsuranceClaim.ClientBlazor.Components.Layout.Shared
+@using System.Net.Http.Json
+@inject HttpClient http
+@inject NavigationManager Navigation
+
+<hr/>
+<div class="mb-3">
+    <label for="statusFilter" class="form-label">Filter by Status</label>
+    @* <select id="statusFilter" class="form-select" @bind="selectedStatus">
+        <option value="">All</option>
+        @foreach (var status in Enum.GetValues<EnumStatus>())
+        {
+            <option value="@((int)status)">@status</option>
+        }
+    </select> *@
+    <select class="form-select" id="statusFilter" @bind="selectedStatus">
+        <option value="">All</option>
+        <option value="@EnumStatus.Pending">Pending</option>
+        <option value="@EnumStatus.Approved">Approved</option>
+        <option value="@EnumStatus.Rejected">Rejected</option>
+    </select>
+</div>
+
+<!-- Table to Display Claims -->
+@* <Table Items="claims" IsStriped="true">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.CustomerName"  Width="180" />
+        <TableColumn @bind-Field="@context.ClaimAmount" />
+        <TableColumn @bind-Field="@context.ClaimDescription" />
+        <TableColumn @bind-Field="@context.ClaimStatus">
+            <Template Context="value">
+            <span class="badge" style="background-color:@GetStatusColor(context.ClaimStatus)">
+                @context.ClaimStatus
+            </span>
+            </Template>
+        </TableColumn>
+    </TableColumns>
+</Table> *@
+
+<MudTable Items="@claims" Dense="true">
+    <HeaderContent>
+        <MudTh>Customer Name</MudTh>
+        <MudTh>Amount</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.CustomerName</MudTd>
+        <MudTd>@context.ClaimAmount</MudTd>
+        <MudTd>@context.ClaimDescription</MudTd>
+        <MudTd>@context.ClaimStatus</MudTd>
+        <MudTd>
+            @if (context.ClaimStatus == EnumStatus.Pending)
+            {
+                <button class="btn btn-warning" @onclick="() => ProcessClaim(context.Id.ToString())">Process</button>
+            }
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private List<ClaimDto> claims = new List<ClaimDto>();
+    private EnumStatus selectedStatus;
+
+    private string GetStatusColor(EnumStatus status)
+    {
+        return status switch
+        {
+            EnumStatus.Approved => "green",
+            EnumStatus.Pending => "orange",
+            EnumStatus.Rejected => "red",
+            _ => "gray"
+        };
+    }
+
+    private List<ClaimDto> FilteredClaims =>
+         claims =  claims.Where(c => c.ClaimStatus == selectedStatus).ToList() ?? claims;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetClaims();
+    }
+
+    private async Task GetClaims()
+    {
+        // Call API to get all the claims
+        var response = await http.GetFromJsonAsync<List<ClaimDto>>("http://localhost:5000/api/Claims/get-all-claims");
+        claims = response ?? new List<ClaimDto>();
+    }
+
+
+    private async Task ProcessClaim(string claimId)
+    {
+        // Call API to process the claim
+        var response = await http.PostAsync($"http://localhost:5000/api/Claims/process-claim/{claimId}", null);
+        await GetClaims();
+    }
+
+    
+}
