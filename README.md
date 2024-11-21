@@ -33,7 +33,7 @@ Backend:
  ```
 
  ```bash
-Frontend
+Frontend:
 ├── Pages               # Razor Pages
 │   └── Home.razor    
 ├── Shared              # Shared Components
@@ -45,7 +45,7 @@ Frontend
 ````
 
  ```bash
-Test
+Test:
 InsuranceClaim.TestAPI
 ├── ClaimsControllerTests.cs  # API controller tests
 ````
