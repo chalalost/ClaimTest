@@ -4,6 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Cấu hình HttpClient
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5000") }); // URL của Web API
+// 增加 BootstrapBlazor 服务
+builder.Services.AddBootstrapBlazor();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
