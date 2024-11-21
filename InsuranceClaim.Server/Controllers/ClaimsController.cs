@@ -12,13 +12,11 @@ namespace InsuranceClaim.Server.Controllers
     [Route("api/[controller]")]
     public class ClaimsController : ControllerBase
     {
-        private readonly ClaimsService _service;
-        private readonly IMapper _mapper;
+        private readonly IClaimsService _service;
 
-        public ClaimsController(ClaimsService service, IMapper mapper)
+        public ClaimsController(IClaimsService service)
         {
             _service = service;
-            _mapper = mapper;
         }
 
 

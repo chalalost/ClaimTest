@@ -33,8 +33,8 @@ namespace InsuranceClaim.Server
                         fv.RegisterValidatorsFromAssemblyContaining<ClaimSubmissionDtoValidator>();
                     });
 
-            services.AddScoped<ClaimsRepository>();
-            services.AddScoped<ClaimsService>();
+            services.AddScoped<IClaimsRepository, ClaimsRepository>();
+            services.AddScoped<IClaimsService, ClaimsService>();
             services.AddControllers();
 
             // CORS configuration

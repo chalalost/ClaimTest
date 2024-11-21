@@ -5,11 +5,11 @@ using InsuranceClaim.Server.Repositories;
 
 namespace InsuranceClaim.Server.Services
 {
-    public class ClaimsService
+    public class ClaimsService: IClaimsService
     {
-        private readonly ClaimsRepository _repository;
+        private readonly IClaimsRepository _repository;
 
-        public ClaimsService(ClaimsRepository repository)
+        public ClaimsService(IClaimsRepository repository)
         {
             _repository = repository;
         }
@@ -38,7 +38,7 @@ namespace InsuranceClaim.Server.Services
 
         public async Task AddClaimAsync(Claim claim)
         {
-            await _repository.AddClaimAsync(claim);
+             await _repository.AddClaimAsync(claim);
         }
     }
 }
