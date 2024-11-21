@@ -4,40 +4,44 @@
 @using System.Text.Json
 @inject HttpClient http
 @inject NavigationManager Navigation
+@rendermode InteractiveServer
 
 <hr/>
 
-<EditForm Model="@newClaim" OnValidSubmit="HandleSubmit">
+<EditForm id="my-form-ref" Model="@newClaim" OnSubmit="HandleSubmit" FormName="claimData" >
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
         <label for="customerName" class="form-label">CustomerName</label>
-        <MudTextField @bind-Value="newClaim.CustomerName" For="@(() => newClaim.CustomerName)" />
+        <InputText id="customerName" class="form-control" @bind-Value="newClaim.CustomerName" />
+        @* <MudTextField @bind-Value="newClaim.CustomerName" For="@(() => newClaim.CustomerName)" /> *@
     </div>
 
     <div class="mb-3">
         <label for="amount" class="form-label">Amount</label>
-        <MudNumericField @bind-Value="newClaim.ClaimAmount" For="@(() => newClaim.ClaimAmount)" />
+        <InputNumber id="amount" class="form-control" @bind-Value="newClaim.ClaimAmount" />
+        @* <MudNumericField @bind-Value="newClaim.ClaimAmount" For="@(() => newClaim.ClaimAmount)" /> *@
     </div>
 
     <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <MudTextField @bind-Value="newClaim.ClaimDescription" For="@(() => newClaim.ClaimDescription)" />
+        <InputTextArea id="description" class="form-control" @bind-Value="newClaim.ClaimDescription" />
+        @* <MudTextField @bind-Value="newClaim.ClaimDescription" For="@(() => newClaim.ClaimDescription)" /> *@
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" form="my-form-ref">Submit</button>
 </EditForm>
 
 
 
 
 @code {
-    private ClaimSubmitDto newClaim { get; set; } = new ClaimSubmitDto();
+    private ClaimSubmitDto newClaim = new ClaimSubmitDto();
 
     private async Task HandleSubmit()
     {
-        var request = new RequestSbumit()
+        var request = new RequestSubmit()
             {
                 CustomerName = newClaim.CustomerName,
                 ClaimAmount = newClaim.ClaimAmount,
@@ -57,7 +61,7 @@
         }
     }
 
-    private class RequestSbumit
+    private class RequestSubmit
     {
         public string CustomerName { get; set; } = String.Empty;
         public decimal ClaimAmount { get; set; }
