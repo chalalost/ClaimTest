@@ -65,6 +65,7 @@ Despite working on this during the week with limited time, the following milesto
 - Built the Blazor WebAssembly frontend with a clean and responsive UI.
 - Integrated form validation for claim submission.
 - Connected the frontend with backend APIs to enable data flow.
+- Taking quite a lot of my time because of issues related to modals and render modes, which require me to spend a lot of time researching.
 
 **Day 3: Unit Testing**
 
