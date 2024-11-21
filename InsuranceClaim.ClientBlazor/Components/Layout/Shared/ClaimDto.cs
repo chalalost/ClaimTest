@@ -4,7 +4,7 @@ namespace InsuranceClaim.ClientBlazor.Components.Layout.Shared
 {
     public class ClaimDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ClaimDescription { get; set; } = string.Empty;
         public string CustomerName { get; set; } = string.Empty;
         public decimal ClaimAmount { get; set; }

@@ -1,7 +1,7 @@
 ﻿using InsuranceClaim.Server.Model.Enum;
 using System.ComponentModel.DataAnnotations;
 
-namespace InsuranceClaim.Server.Model.Entities
+namespace InsuranceClaim.Server.Data.Entities
 {
     public partial class Claim
     {

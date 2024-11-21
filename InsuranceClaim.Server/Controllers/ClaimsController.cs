@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InsuranceClaim.Server.Data;
+using InsuranceClaim.Server.Data.Entities;
 using InsuranceClaim.Server.Model.DTOs;
-using InsuranceClaim.Server.Model.Entities;
 using InsuranceClaim.Server.Model.Enum;
 using InsuranceClaim.Server.Services;
 using Microsoft.AspNetCore.Mvc;

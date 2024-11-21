@@ -1,5 +1,5 @@
-﻿using InsuranceClaim.Server.Extensions;
-using InsuranceClaim.Server.Model.Entities;
+﻿using InsuranceClaim.Server.Data.Entities;
+using InsuranceClaim.Server.Extensions;
 using InsuranceClaim.Server.Model.Enum;
 using InsuranceClaim.Server.Repositories;
 

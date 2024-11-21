@@ -1,4 +1,4 @@
-﻿using InsuranceClaim.Server.Model.Entities;
+﻿using InsuranceClaim.Server.Data.Entities;
 using InsuranceClaim.Server.Model.Enum;
 
 namespace InsuranceClaim.Server.Data
@@ -22,14 +22,14 @@ namespace InsuranceClaim.Server.Data
                         CustomerName = "Jane Smith",
                         ClaimAmount = 1500.00m,
                         ClaimDescription = "Water damage in home",
-                        ClaimStatus = EnumStatus.Pending 
+                        ClaimStatus = EnumStatus.Approved 
                     },
                     new Claim
                     {
                         CustomerName = "Tom Brown",
                         ClaimAmount = 800.00m,
                         ClaimDescription = "Stolen wallet",
-                        ClaimStatus = EnumStatus.Pending
+                        ClaimStatus = EnumStatus.Rejected
                     }
                 );
                 context.SaveChanges();

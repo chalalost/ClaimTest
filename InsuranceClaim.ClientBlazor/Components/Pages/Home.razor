@@ -1,80 +1,131 @@
 ﻿@page "/"
-@using System.Text.Json
 @using InsuranceClaim.ClientBlazor.Components.Layout.Shared
 @inject HttpClient http
-@inject NavigationManager navigationManager
+@inject NavigationManager Navigation
+
+<PageTitle>Claims List</PageTitle>
 
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header text-center">
-                    <h4>Insurance Claim Submission</h4>
-                </div>
-                <div class="card-body">
-                    <EditForm Model="claimModel" OnValidSubmit="SubmitClaim">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary />
+    <h3>Claims List</h3>
 
-                        <div class="mb-3">
-                            <label for="customerName" class="form-label">Customer Name</label>
-                            <InputText id="customerName" class="form-control" @bind-Value="claimModel.CustomerName" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="claimAmount" class="form-label">Claim Amount</label>
-                            <InputNumber id="claimAmount" class="form-control" @bind-Value="claimModel.ClaimAmount" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="claimDescription" class="form-label">Claim Description</label>
-                            <InputTextArea id="claimDescription" class="form-control" @bind-Value="claimModel.ClaimDescription" rows="3" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="claimDate" class="form-label">Claim Date</label>
-                            <InputDate id="claimDate" class="form-control" @bind-Value="claimModel.ClaimDate" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Claim Status</label>
-                            <select id="status" class="form-select" @bind="claimModel.ClaimStatus">
-                                <option value="Pending">Pending</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Rejected">Rejected</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100">Submit Claim</button>
-                    </EditForm>
-                </div>
-            </div>
-        </div>
+    <!-- Status Filter -->
+    <div class="mb-3">
+        <label for="statusFilter" class="form-label">Filter by Status</label>
+        <select class="form-select" id="statusFilter" @bind="statusFilter">
+            <option value="">All</option>
+            <option value="1">Pending</option>
+            <option value="0">Approved</option>
+            <option value="Rejected">Rejected</option>
+        </select>
     </div>
+
+    <!-- Claims Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in claims)
+            {
+                <tr>
+                    <td>@claim.CustomerName</td>
+                    <td>@claim.ClaimAmount.ToString("C")</td>
+                    <td class="@GetStatusClass(claim.ClaimStatus)">
+                        @claim.ClaimStatus
+                    </td>
+                    <td>
+                        @if (claim.ClaimStatus == EnumStatus.Pending)
+                        {
+                            <button class="btn btn-warning" @onclick="() => ProcessClaim(claim.Id)">Process</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- New Claim Form -->
+    <button class="btn btn-primary" @onclick="ToggleForm">Create New Claim</button>
+
+    @if (showSubmitForm)
+    {
+        <EditForm Model="newClaim" OnValidSubmit="SubmitClaim">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-3">
+                <label for="customerName" class="form-label">Customer Name</label>
+                <InputText id="customerName" class="form-control" @bind-Value="newClaim.CustomerName" required />
+            </div>
+            <div class="mb-3">
+                <label for="claimAmount" class="form-label">Claim Amount</label>
+                <InputNumber id="claimAmount" class="form-control" @bind-Value="newClaim.ClaimAmount" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Claim</button>
+        </EditForm>
+    }
 </div>
 
 @code {
     [CascadingParameter]
-    private ClaimDto claimModel { get; set; } = new ClaimDto();
+    private List<ClaimDto> claims{ get; set; } = new List<ClaimDto>();
+    [CascadingParameter]
+    private ClaimSubmitDto newClaim{ get; set; } = new ClaimSubmitDto();
+    private EnumStatus statusFilter;
+    private bool showSubmitForm = false;
 
-    private List<ClaimDto> claims { get; set; } = new List<ClaimDto>();
-
-    private async Task SubmitClaim()
+    protected override async Task OnInitializedAsync()
     {
-        // Call the backend API to submit the claim
-        var response = await http.GetAsync("http://localhost:5000/api/claim/get-all-claims");
+        var response = await http.GetFromJsonAsync<List<ClaimDto>>("http://localhost:5000/api/Claims/get-all-claims");
+        claims = response ?? new List<ClaimDto>();
+    }
 
+    private List<ClaimDto> FilteredClaims =>
+        claims.Where(c => c.ClaimStatus == statusFilter).ToList();
+
+    private string GetStatusClass(EnumStatus status)
+    {
+        return status switch
+        {
+            EnumStatus.Pending => "text-warning",
+            EnumStatus.Approved => "text - success",
+            EnumStatus.Rejected => "text - danger",
+            _ => "text-muted"
+        };
+    }
+
+    private async Task ProcessClaim(Guid claimId)
+    {
+        var response = await http.PostAsync($"http://localhost:5000/api/Claims/process-claim/{claimId}", null);
         if (response.IsSuccessStatusCode)
         {
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<ClaimDto>>(json);
-            if (result != null) claims = result;
+            Navigation.NavigateTo("/");
         }
         else
         {
-            // Handle errors (e.g., display an error message)
-            Console.WriteLine("Error!");
-            return;
+            
+        }
+    }
+
+    private void ToggleForm()
+    {
+        showSubmitForm = !showSubmitForm;
+    }
+
+    private async Task SubmitClaim()
+    {
+        var response = await http.PostAsJsonAsync("http://localhost:5000/api/Claims/submit-claim", newClaim);
+        if (response.IsSuccessStatusCode)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+
         }
     }
 }
