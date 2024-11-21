@@ -1,11 +1,9 @@
 ﻿using InsuranceClaim.ClientBlazor.Components;
-using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Cấu hình HttpClient
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5000") }); // URL của Web API
-builder.Services.AddMudServices();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

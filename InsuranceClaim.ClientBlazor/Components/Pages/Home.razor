@@ -12,10 +12,10 @@
     <div class="mb-3">
         <label for="statusFilter" class="form-label">Filter by Status</label>
         <select class="form-select" id="statusFilter" @bind="statusFilter">
-            <option value="">All</option>
-            <option value="1">Pending</option>
-            <option value="0">Approved</option>
-            <option value="Rejected">Rejected</option>
+            <option value="" >All</option>
+            <option @onclick="() => FilteredClaims(EnumStatus.Pending)">Pending</option>
+            <option @onclick="() => FilteredClaims(EnumStatus.Approved)">Approved</option>
+            <option @onclick="() => FilteredClaims(EnumStatus.Rejected)">Rejected</option>
         </select>
     </div>
 
@@ -54,19 +54,29 @@
 
     @if (showSubmitForm)
     {
-        <EditForm Model="newClaim" OnValidSubmit="SubmitClaim">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <div class="mb-3">
-                <label for="customerName" class="form-label">Customer Name</label>
-                <InputText id="customerName" class="form-control" @bind-Value="newClaim.CustomerName" required />
+        <div class="modal-overlay">
+            <div class="modal">
+                <h4>Submit New Claim</h4>
+                <form @onsubmit="SubmitClaim">
+                    <div class="mb-3">
+                        <label for="customerName" class="form-label">Customer Name</label>
+                        <input id="customerName" type="text" class="form-control" @bind="newClaim.CustomerName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="claimAmount" class="form-label">Claim Amount</label>
+                        <input id="claimAmount" type="number" class="form-control" @bind="newClaim.ClaimAmount" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" class="form-control" @bind="newClaim.ClaimDescription"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseForm">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="claimAmount" class="form-label">Claim Amount</label>
-                <InputNumber id="claimAmount" class="form-control" @bind-Value="newClaim.ClaimAmount" required />
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Claim</button>
-        </EditForm>
+        </div>
     }
 </div>
 
@@ -84,16 +94,27 @@
         claims = response ?? new List<ClaimDto>();
     }
 
-    private List<ClaimDto> FilteredClaims =>
-        claims.Where(c => c.ClaimStatus == statusFilter).ToList();
+    private async Task FilteredClaims(EnumStatus status)
+    {
+        if(status == null)
+        {
+            var response = await http.GetFromJsonAsync<List<ClaimDto>>("http://localhost:5000/api/Claims/get-all-claims");
+            claims = response ?? new List<ClaimDto>();
+        }
+        else
+        {
+            var response = await http.GetFromJsonAsync<List<ClaimDto>>("http://localhost:5000/api/Claims/retrieve-claims?status={status}");
+            claims = response ?? new List<ClaimDto>();
+        }
+    }
 
     private string GetStatusClass(EnumStatus status)
     {
         return status switch
         {
             EnumStatus.Pending => "text-warning",
-            EnumStatus.Approved => "text - success",
-            EnumStatus.Rejected => "text - danger",
+            EnumStatus.Approved => "text-success",
+            EnumStatus.Rejected => "text-danger",
             _ => "text-muted"
         };
     }
@@ -103,7 +124,7 @@
         var response = await http.PostAsync($"http://localhost:5000/api/Claims/process-claim/{claimId}", null);
         if (response.IsSuccessStatusCode)
         {
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo("/abc");
         }
         else
         {
@@ -115,6 +136,8 @@
     {
         showSubmitForm = !showSubmitForm;
     }
+
+    private void CloseForm() => showSubmitForm = false;
 
     private async Task SubmitClaim()
     {
